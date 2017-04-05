@@ -17,7 +17,7 @@ get_approxMap(seqList, k, strength, id = 1)
 Clusters and gives the consensus pattern from the sequence list
 }
 \description{
-Does al the steps in approxmap algorithm
+Does all the steps in approxmap algorithm
 }
 \examples{
 get_approxMap(sequences_list, 2, 0.4)

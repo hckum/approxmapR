@@ -39,7 +39,7 @@ get_consensus_pattern = function(weighted_seq, strength, blank_if_absent = F) {
 
 #' get_approxMap
 #'
-#' Does al the steps in approxmap algorithm
+#' Does all the steps in approxmap algorithm
 #'
 #' @param seqList A list of sequences
 #' @param k The number of nearest neighbours to look at
@@ -149,7 +149,7 @@ approxmap = function(file, k, cons_cutoff = 0.5, var_thresh = 0.2, noise_thresh 
     }
   }
 
-  tempReport4 <- system.file("rmd/markdown_weighted_seq.Rmd", package="approxmap")
+  tempReport4 <- system.file("rmd/markdown_weighted_seq.Rmd", package="approxmapR")
   params4 <- list(input = w_seq_table
                   , get_title = "Weighted Sequences")
   wseq_file_name <- paste0(param_string,"_wseq.html")
@@ -161,7 +161,7 @@ approxmap = function(file, k, cons_cutoff = 0.5, var_thresh = 0.2, noise_thresh 
   data_file_name <- paste0(results_directory,file_name,"_aggregated.csv")
   write.csv(aggregated_data, data_file_name, row.names = F)
 
-  tempReport3 <- system.file("rmd/markdown_plot.Rmd", package="approxmap")
+  tempReport3 <- system.file("rmd/markdown_plot.Rmd", package="approxmapR")
   plot_file_name <- paste0(param_string,"_freq_plots.html")
   params3 <- list(w_seq= results$weighted_seqs,
                   n_cutoff= 0.4, cons_cutoff= cons_cutoff,
@@ -189,7 +189,7 @@ approxmap = function(file, k, cons_cutoff = 0.5, var_thresh = 0.2, noise_thresh 
                                                       , var_thresh, cons_cutoff)
   }
 
-  tempReport2 <- system.file("rmd/markdown_consensus_pat.Rmd", package="approxmap")
+  tempReport2 <- system.file("rmd/markdown_consensus_pat.Rmd", package="approxmapR")
   patterns_file_name <- paste0(param_string,"_cons_var_patterns.html")
   params2 <- list(input = cons_var_table
                   , get_title = "Patterns")
