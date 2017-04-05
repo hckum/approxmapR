@@ -9,7 +9,7 @@ Installation instructions
 To install and load Approxmap, use the following code snippet:
 
     install.packages("devtools")
-    devtools::install_github("ilangurudev/approxmapR")
+    devtools::install_github("hckum/approxmapR")
     library(approxmapR)
 
 Approxmap modes
