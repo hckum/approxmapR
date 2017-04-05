@@ -1,0 +1,60 @@
+---
+output: html_document
+params: 
+ input : NA
+ get_title: NA
+---
+
+---
+title: `r params$get_title`
+---
+
+<head>
+  <style>
+      priority1 {
+                  font-size: 75%;
+                  color: #7DCEA0;
+                }
+                priority2 {
+                  font-size: 100%;
+                  color: #52BE80;
+                }
+                priority3 {
+                  font-size: 125%;
+                  color: #27AE60;
+                }
+                priority4 {
+                  font-size: 150%;
+                  color: #229954;
+                }
+                priority5 {
+                  font-size: 175%;
+                  color: #1E8449;
+                  font-weight: bold;
+                }
+  </style>
+</head>
+
+
+
+```{r include=FALSE}
+
+col_title = paste(strsplit(params$get_title,split = " ")[[1]],collapse = " ")
+table <- data.frame(1:length(params$input)
+                    ,unlist(params$input))
+
+colnames(table) <- c("Cluster No", col_title)
+
+table2 <- data.frame(unlist(params$input))
+```
+
+
+
+```{r echo = FALSE}
+# knitr::kable(table, row.names = FALSE, 
+             # align = 'l', caption = params$get_title)
+
+knitr::kable(table2, row.names = FALSE, col.names = "Consensus and Variation Pattern for different clusters",
+             align = 'l')
+```
+

@@ -1,0 +1,54 @@
+```{r}
+inp = read.csv("./data/demo1.csv")
+inp = cvt_seq(ord_date(inp,pd=1))
+(x = get_approxMap(inp,2,0.4))
+(wx = x$weighted_seqs[[1]])
+(cx = get_consensus_pattern(wx,0.4))
+
+x <- approxmap("./data/t10.csv", k = 4, cons_cutoff =  0.4, var_thresh = 0.2, period1 = "1 Week", st.date = "Mon")
+x <- approxmap("./data/demo1.csv", k = 4, cons_cutoff =  0.4, var_thresh = 0.2, period1 = "1 Week", st.date = "Mon")
+```
+
+```{r}
+inp <- read.table("./data/t10.data")
+inp <- cvt_seq(inp)
+id <- 1:length(inp)
+
+# y <- cluster_knn(inp,6,id)
+# length(unique(y$Cluster))
+# table(y$Cluster)
+
+(x = get_approxMap(inp,3,0.3))
+
+
+dist_mat <- calculate_distance_bw_sequences_cpp(inp)
+d <- as.dist(dist_mat)
+hcl <- hclust(d, method = "complete")
+plot(hcl)
+
+
+one_mem_clust_info <- y %>% group_by(Cluster) %>% arrange(Cluster) %>% summarise(nrow = n(),ClusterDensity = mean(ClusterDensity)) %>% filter(nrow == 1) 
+#z <- calculate_DensityInfo(inp,3)
+one_mem_clust <- one_mem_clust_info$Cluster
+(flagged_ids <- y %>% filter(Cluster %in% one_mem_clust) %>% select(ID))
+(flagged_id <- flagged_ids$ID[4])
+(ns <- id[z[[flagged_id]]$NearestSequences])
+ns <- ns[!is.na(ns)]
+inp[ns]
+y %>% filter(ID %in% ns)
+sort(z[[flagged_id]]$distances,partial = 3)[3]
+dist_bw_sequences_cpp(inp[[flagged_id]],inp[[ns[1]]]) #indeed 0, verified.
+
+dist_matrix <- calculate_distance_bw_sequences_cpp(inp)
+dist_matrix_vec <- unlist(dist_matrix)
+dist_matrix_vec %>% hist()
+
+y2 <- knnCluster(inp,3,1:length(inp))
+y2 %>% select(Cluster,ClusterDensity) %>% group_by(Cluster) %>% arrange(Cluster) %>% summarise(nrow = n(),ClusterDensity = mean(ClusterDensity)) %>% filter(ClusterDensity == Inf)
+
+
+y3 <- knnCluster2(inp,20,1:length(inp))
+y3 %>% select(Cluster,ClusterDensity) %>% group_by(Cluster) %>% arrange(Cluster) %>% summarise(nrow = n(),ClusterDensity = mean(ClusterDensity))
+#%>% filter(ClusterDensity == Inf)
+
+```

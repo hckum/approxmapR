@@ -1,0 +1,32 @@
+---
+output: html_document
+params: 
+ input: NA
+ get_title: NA
+---
+
+---
+title: "Events arranged"
+---
+
+
+```{r include=FALSE}
+
+# col_title = paste(strsplit(params$get_title,split = " ")[[1]],collapse = " ")
+
+# table <- data.frame( unlist(params$input$ID)
+#                        , unlist(params$input$Date)
+#                        , unlist(params$input$Item))
+
+table <- params$input
+
+colnames(table) <- c("ID", "Time Period", "Event")
+```
+  
+```{r echo = FALSE}
+
+knitr::kable(table,
+             row.names = FALSE, 
+             align = 'l', caption = "Events arranged as per time period")
+
+```
