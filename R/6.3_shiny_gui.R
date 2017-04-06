@@ -6,6 +6,6 @@
 #' @export
 
 gui_approxmap <- function(launch.browser=TRUE) {
-  shiny::runApp(system.file('approxmap_shiny', package='approxmap'),
+  shiny::runApp(system.file('approxmap_shiny', package='approxmapR'),
                 launch.browser=launch.browser)
 }
