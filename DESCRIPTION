@@ -11,6 +11,7 @@ Encoding: UTF-8
 LazyData: true
 Depends: 
   Rcpp,
+  RcppProgress,
   rmarkdown,
   shiny,
   magrittr,
@@ -20,5 +21,5 @@ Depends:
   ggplot2,
   lubridate,
   shinydashboard
-LinkingTo: Rcpp
+LinkingTo: Rcpp, RcppProgress
 RoxygenNote: 6.0.1
