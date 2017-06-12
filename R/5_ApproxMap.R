@@ -103,10 +103,43 @@ approxmap = function(file, k, cons_cutoff = 0.5, var_thresh = 0.2, noise_thresh 
 
   data = read.csv(file, header=T)
   if(!all(is.na(as.Date(as.character(data[1,2]),format="%m/%d/%Y")))) {
+
+    colnames(data) <- c("ID", "Date", "Event")
+    unique_items = nrow(data.frame(data %>% select(Event) %>%
+                                     unique()))
+
+
     inp <- ord_date(data, get.pd(period1), get.st.date(st.date))
+
+    # change col names
+    colnames(inp) <- c("ID", "Period", "Event")
+    suppressMessages( inp <- inp %>% group_by(ID, Period) %>%
+                        select(Event) %>% unique() )
+    inp <- na.omit(inp)
+
+    message(noquote(sprintf("\n")))
+    message(noquote(sprintf("\nSummary Statistics for the data is as follows:")))
+    message(noquote(sprintf("\n")))
+    # check what is getting displayed
+
+    # noquote(sprintf("Number of Unique Items: %i", nrow(unique_items)))
+    # message(noquote(sprintf("\nNumbers of Unique Items: %i", nrow(unique_items))))
+    print(noquote(sprintf("Numbers of Unique Items: %i", unique_items)))
+    # nrow(unique_items)
+
   } else {
     inp <- data
-    colnames(inp) <- c("ID", "Time Period", "Event")
+    colnames(inp) <- c("ID", "Period", "Event")
+    unique_items = nrow(data.frame(inp %>% select(Event) %>% unique()))
+
+    message(noquote(sprintf("\n")))
+    message(noquote(sprintf("Summary Statistics for the data is as follows:")))
+    # noquote(sprintf("Numbers of Unique Items: %i", nrow(unique_items)))
+    message(noquote(sprintf("\n")))
+    print(noquote(sprintf("Numbers of Unique Items: %i", unique_items)))
+
+    suppressMessages( inp <- inp %>% group_by(ID, Period) %>% select(Event) %>% unique())
+    inp <- na.omit(inp)
   }
 
   file_name <- strsplit(basename(file), split = "\\.")[[1]][1]
@@ -114,6 +147,46 @@ approxmap = function(file, k, cons_cutoff = 0.5, var_thresh = 0.2, noise_thresh 
   results_directory = paste0(results_directory,"/approxmap_results/",param_string,"/")
 
   aggregated_data <- inp
+
+  ###### check names
+
+
+  tab1 = inp %>% group_by(ID) %>%
+                      select(Period) %>%
+                      unique()  %>%
+                      summarize(count=n())
+  tab2 = tab1[,2]
+
+  cat(sprintf("\n[2] Statistics for Number of Sets per Sequence:\n
+              Mean: %f \n
+              Std. Dev.: %f \n
+              Max.: %f \n
+              Min.: %f \n
+              Quantiles: \n",
+              mean(tab2[[1]]), sd(tab2[[1]]), max(tab2[[1]]), min(tab2[[1]]) ))
+  print(noquote( c("         ", quantile(tab2[[1]]) )))
+
+  # check names
+  tab3 = inp %>% group_by(ID, Period) %>% summarize(Items=n())
+  tab4 = tab3[,3]
+
+
+  cat(sprintf("\n[3] Statistics for Number of Items per Set:\n
+              Mean: %f \n
+              Std. Dev.: %f \n
+              Max.: %f \n
+              Min.: %f \n
+              Quantiles: \n",
+              mean(tab4[[1]]), sd(tab4[[1]]), max(tab4[[1]]), min(tab4[[1]]) ))
+  print(noquote( c("         ", quantile(tab4[[1]]) )))
+
+
+  cat(noquote("\n\n"))
+
+
+
+
+
   inp = cvt_seq(inp)
   results = get_approxMap(inp, k, cons_cutoff)
 
