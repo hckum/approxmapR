@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <string>
 #include <set>
+// [[Rcpp::depends(RcppProgress)]]
+#include <progress.hpp>
 using namespace std;
 using namespace Rcpp;
 
@@ -136,11 +138,14 @@ float dist_bw_sequences_cpp(List sequence_1, List sequence_2)
 NumericMatrix calculate_distance_bw_sequences_cpp(List sequences)
 {
   int seq_list_length = sequences.length();
+  Progress p(seq_list_length*seq_list_length, true);
   NumericMatrix distance_matrix(seq_list_length,seq_list_length);
   for(int i = 0; i < seq_list_length; i++)
   {
     for(int j = 0; j < seq_list_length; j++)
     {
+      if (Progress::check_abort() )
+        return -1.0;
       if(i==j){
         distance_matrix(i,j) = 0;
       } else if(distance_matrix(j,i) != 0) {
@@ -148,6 +153,7 @@ NumericMatrix calculate_distance_bw_sequences_cpp(List sequences)
       } else {
         distance_matrix(i,j) = dist_bw_sequences_cpp(sequences[i],sequences[j]);
       }
+      p.increment();
     }
   }
   return(distance_matrix);
