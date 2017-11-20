@@ -1,25 +1,14 @@
 #include <Rcpp.h>
-#include <algorithm>
-#include <string>
-#include <set>
+// #include <algorithm>
+// #include <string>
+// #include <set>
+
 // [[Rcpp::depends(RcppProgress)]]
 #include <progress.hpp>
+
 using namespace std;
 using namespace Rcpp;
 
-//' @title
-//' calculate_sorenson_distance_cpp
-//' @description
-//' Calculates x
-//'
-//' @param itemset_1 a vector of intertime values
-//' @param itemset_2 a vector of intertime values
-//'
-//'
-//' @details
-//' \code{session_count} takes a vector of intertime values (generated via \code{\link{intertimes}},
-//' or in any other way you see fit) and returns the total number of sessions within that dataset.
-//' It's implimented in C++, providing a (small) increase in speed over the R equivalent.
 //' @export
 // [[Rcpp::export]]
 float calculate_sorenson_distance_cpp(StringVector itemset_1, StringVector itemset_2)
@@ -67,19 +56,7 @@ float calculate_sorenson_distance_cpp(StringVector itemset_1, StringVector items
   return(dist);
 }
 
-//' @title
-//' dist_bw_sequences_cpp
-//' @description
-//' Calculates x
-//'
-//' @param sequence_1 a vector of intertime values
-//' @param sequence_2 a vector of intertime values
-//'
-//'
-//' @details
-//' \code{session_count} takes a vector of intertime values (generated via \code{\link{intertimes}},
-//' or in any other way you see fit) and returns the total number of sessions within that dataset.
-//' It's implimented in C++, providing a (small) increase in speed over the R equivalent.
+
 //' @export
 // [[Rcpp::export]]
 float dist_bw_sequences_cpp(List sequence_1, List sequence_2)
@@ -122,20 +99,9 @@ float dist_bw_sequences_cpp(List sequence_1, List sequence_2)
 
 
 
-//' @title
-//' calculate_distance_bw_sequences_cpp
-//' @description
-//' Calculates x
-//'
-//' @param sequences a list of intertime values
-//'
-//' @details
-//' \code{session_count} takes a vector of intertime values (generated via \code{\link{intertimes}},
-//' or in any other way you see fit) and returns the total number of sessions within that dataset.
-//' It's implimented in C++, providing a (small) increase in speed over the R equivalent.
 //' @export
 // [[Rcpp::export]]
-NumericMatrix calculate_distance_bw_sequences_cpp(List sequences)
+NumericMatrix inter_sequence_distance_cpp(List sequences)
 {
   int seq_list_length = sequences.length();
   Progress p(seq_list_length*seq_list_length, true);
@@ -147,7 +113,7 @@ NumericMatrix calculate_distance_bw_sequences_cpp(List sequences)
       if (Progress::check_abort() )
         return -1.0;
       if(i==j){
-        distance_matrix(i,j) = 0;
+        distance_matrix(i,j) = NumericVector::get_na();
       } else if(distance_matrix(j,i) != 0) {
         distance_matrix(i,j) = distance_matrix(j,i);
       } else {

@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // calculate_sorenson_distance_cpp
 float calculate_sorenson_distance_cpp(StringVector itemset_1, StringVector itemset_2);
-RcppExport SEXP approxmapR_calculate_sorenson_distance_cpp(SEXP itemset_1SEXP, SEXP itemset_2SEXP) {
+RcppExport SEXP _approxmapR_calculate_sorenson_distance_cpp(SEXP itemset_1SEXP, SEXP itemset_2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -19,7 +19,7 @@ END_RCPP
 }
 // dist_bw_sequences_cpp
 float dist_bw_sequences_cpp(List sequence_1, List sequence_2);
-RcppExport SEXP approxmapR_dist_bw_sequences_cpp(SEXP sequence_1SEXP, SEXP sequence_2SEXP) {
+RcppExport SEXP _approxmapR_dist_bw_sequences_cpp(SEXP sequence_1SEXP, SEXP sequence_2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -29,14 +29,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// calculate_distance_bw_sequences_cpp
-NumericMatrix calculate_distance_bw_sequences_cpp(List sequences);
-RcppExport SEXP approxmapR_calculate_distance_bw_sequences_cpp(SEXP sequencesSEXP) {
+// inter_sequence_distance_cpp
+NumericMatrix inter_sequence_distance_cpp(List sequences);
+RcppExport SEXP _approxmapR_inter_sequence_distance_cpp(SEXP sequencesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type sequences(sequencesSEXP);
-    rcpp_result_gen = Rcpp::wrap(calculate_distance_bw_sequences_cpp(sequences));
+    rcpp_result_gen = Rcpp::wrap(inter_sequence_distance_cpp(sequences));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_approxmapR_calculate_sorenson_distance_cpp", (DL_FUNC) &_approxmapR_calculate_sorenson_distance_cpp, 2},
+    {"_approxmapR_dist_bw_sequences_cpp", (DL_FUNC) &_approxmapR_dist_bw_sequences_cpp, 2},
+    {"_approxmapR_inter_sequence_distance_cpp", (DL_FUNC) &_approxmapR_inter_sequence_distance_cpp, 1},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_approxmapR(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }
